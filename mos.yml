@@ -23,6 +23,10 @@ filesystem:
 config_schema:
   - ["clock", "o", {title: "Clock settings"}]
   - ["clock.timezone", "i", 6, {title: "timezone"}]
+  - ["clock.brightness", "i", 2, {title: "display brightness 0-7"}]
+  - ["mqtt.enable", true]
+  - ["wifi.ap.ssid", "Clock_??????"] 
+  - ["wifi.ap.pass", "12345678"]
 #  - ["clock.sntp_server", "s", "", {title: "NTP server address"}]
 
 # Custom configuration entries, settable via "device configuration"
@@ -65,6 +69,8 @@ libs:
   - origin: https://github.com/mongoose-os-libs/arduino-compat
   - origin: https://github.com/mongoose-os-libs/rpc-service-wifi
   - origin: https://github.com/mongoose-os-libs/http-server
+  - origin: https://github.com/mongoose-os-libs/mqtt
+  - origin: https://github.com/mongoose-os-libs/sntp
 
 
 # Used by the mos tool to catch mos binaries incompatible with this file format

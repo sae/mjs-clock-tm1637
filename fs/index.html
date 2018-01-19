@@ -20,13 +20,10 @@
 
 </head>
 <body>
-  <nav class="nav" tabindex="-1" onclick="this.focus()">
-
- </nav>
  <div class="container">
   <div class="hero">
   	<h1>Web Setup</h1>
-  	
+        <p>you can always return to default settings by short pins D7 and D8</p>
   </div>
   <div class="row form">
 
@@ -39,20 +36,29 @@
         <label for="pass">WiFi Password:</label>
         <input type="text" class="smooth" id="pass" name="pass" placeholder="Type WiFi password...">
       </div>
+      <div class="form-control">
+        <label for="tz">Timezone:</label>
+        <input type="text" class="smooth" id="tz" name="tz" placeholder="Timezone, 6 or -6...">
+      </div>
+      <div class="form-control">
+        <label for="br">Brightness:</label>
+        <input type="text" class="smooth" id="br" name="br" placeholder="Clock brightness, 0-7...">
+      </div>
       <div class="form-control"><button href="#" class="btn btn-sm btn-c" id="save">Save WiFi settings</button></div>
     </div>
-
+      <!-- 
     <div class="col c8">
-      <!-- <h3>Result:</h3> -->
+<h3>Result:</h3> 
       <div id="result"></div>
     </div>
-
+-->
   </div>
 </div>
 
 <script>
   var log = function(msg) {
-    $('<span/>').html(msg + '\n').appendTo('#result')
+	  console.log(msg);
+    //$('<span/>').html(msg + '\n').appendTo('#result')
   };
 
   log('Calling /rpc/Config.Get ...');
@@ -62,14 +68,18 @@
       log('Result: ' + JSON.stringify(data));
       $('#ssid').val(data.wifi.sta.ssid);
       $('#pass').val(data.wifi.sta.pass);
+      $('#br').val(data.clock.brightness);
+      $('#tz').val(data.clock.timezone);
     },
   });
 
   $('#save').on('click', function() {
     log('Calling /rpc/Config.Set  ...');
+    var conf={config: {wifi: {ap: {enable: false}, sta: {enable: true, ssid: $('#ssid').val(), pass: $('#pass').val()}}, clock: {brightness: Number.parseInt($('#br').val()), timezone: Number.parseInt($('#tz').val())} }}
+    log(JSON.stringify(conf));
     $.ajax({
       url: '/rpc/Config.Set',
-      data: JSON.stringify({config: {wifi: {sta: {enable: true, ssid: $('#ssid').val(), pass: $('#pass').val()}}}}),
+      data: JSON.stringify(conf),
       type: 'POST',
       // contentType: 'application/json',
       success: function(data) {
