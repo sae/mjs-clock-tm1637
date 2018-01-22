@@ -55,13 +55,20 @@ Timer.set(1000 /* 1 sec */, true /* repeat */, function() {
   Display();
   }, null);
 
+let counter=0;
 function Display() {
   if (!wifi_sta) {
     //TODO: displsy "AP" ?
     showNumEx(0, 0 ,true , 4, 0);
     return;
   }
-  showNumEx(timeHM(), colon^=0xFF ,true , 4, 0);
+  if (counter%30<20) {
+    showNumEx(timeHM(), colon^=0xFF ,true , 4, 0); //show time
+  } else {
+    showNumEx(dateDM(), 0 ,true , 4, 0); //show date`
+  }
+  
+  counter++;
 }
 
 //returns digits for display, "09:01" will be 901 etc
@@ -77,6 +84,15 @@ function timeHM() {
 function timeMS() {
   let t=0;
   let ts=Timer.fmt("-%M%S", Timer.now()+tz); //without a char format doesn't work
+  for (let i=0;i<4;i++) {
+    t=t*10+ts.at(i+1)-0x30;
+  }
+  return t;
+}
+
+function dateDM() {
+  let t=0;
+  let ts=Timer.fmt("-%d%m", Timer.now()+tz); //without a char format doesn't work
   for (let i=0;i<4;i++) {
     t=t*10+ts.at(i+1)-0x30;
   }
