@@ -27,6 +27,7 @@ config_schema:
   - ["mqtt.enable", true]
   - ["wifi.ap.ssid", "Clock_??????"] 
   - ["wifi.ap.pass", "12345678"]
+  - ["device.id", "Clock_??????"] 
 #  - ["clock.sntp_server", "s", "", {title: "NTP server address"}]
 
 # Custom configuration entries, settable via "device configuration"
